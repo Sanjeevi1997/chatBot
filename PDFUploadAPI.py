@@ -1,9 +1,15 @@
 from flask import Flask, request, jsonify
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain.embeddings import HuggingFaceInstructEmbeddings
+from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
-#from langchain.vectorstores import FAISS
+from langchain.vectorstores import FAISS
+from llama_index import VectorStoreIndex, StorageContext, SimpleDirectoryReader
+from llama_index.vector_stores.mongodb import MongoDBAtlasVectorSearch
+from llama_index.storage.storage_context import StorageContext
+from langchain.chains import ConversationalRetrievalChain
+from langchain.memory import ConversationBufferMemory
+from langchain.chat_models import ChatOpenAI
 import os
 import pymongo
 from werkzeug.utils import secure_filename
@@ -14,17 +20,19 @@ ALLOWED_EXTENSIONS = {'pdf'}
 
 client = pymongo.MongoClient("mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.1.1")
 
+#msanjeeviraman97
+#KaqTpAvO40QR0Lzj
+
 db = client.get_database("ChatBot")
 
 collection = db["ChunkData"]
 
 def get_vectorstore(text_chunks):
-    embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-    #embeddings = OpenAIEmbeddings() //chargeable ==> /1000 token = 0.004$
-    #vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
-    return embeddings
+    embeddings = OpenAIEmbeddings()
+    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    return vectorstore
 
-def upload_chunk_data(pdf_name,text_chunk):
+def upload_chunk_data(pdf_name,pdf_doc):
   upload_data = {
     "PDFFileName": pdf_name,
     "JunkData": text_chunk
@@ -66,11 +74,11 @@ def upload_files():
         pdf_fileName = os.path.splitext(pdf_doc.filename)[0]
         raw_text = get_pdf_raw_text(pdf_doc)
         text_chunks = get_text_chunks(raw_text)
-        upload_chunk_data(pdf_fileName,text_chunks)
-        #vectorstore = get_vectorstore(text_chunks)
+        upload_chunk_data(pdf_fileName,pdf_doc)
+        # vectorstore = get_vectorstore(text_chunks)
 
     client.close()
-    return jsonify("All PDF files are uploaded successfully"), 200
+    return jsonify(""), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
