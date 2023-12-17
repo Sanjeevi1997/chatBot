@@ -1,0 +1,20 @@
+mongodb+srv://msanjeeviraman97:KaqTpAvO40QR0Lzj@chatbot.8uisgjj.mongodb.net/
+
+db.default_collection.deleteMany({"metadata.file_path": {$exists: true}})
+
+Index:
+
+{
+  "mappings" : {
+    "dynamic" : true,
+    "fields" : {
+      "embedding": [
+        {
+          "type": "knnVector",
+          "dimensions": 1536,
+          "similarity": "euclidean"
+        }
+      ]
+    }
+  }
+}

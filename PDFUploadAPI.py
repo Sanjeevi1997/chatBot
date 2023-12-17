@@ -4,13 +4,15 @@ from langchain.embeddings import OpenAIEmbeddings
 from dotenv import load_dotenv
 from langchain.vectorstores import FAISS
 import pymongo
+import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 
 ALLOWED_EXTENSIONS = {'pdf'}
 
-client = pymongo.MongoClient("mongodb+srv://msanjeeviraman97:KaqTpAvO40QR0Lzj@chatbot.8uisgjj.mongodb.net/?retryWrites=true&w=majority")
+MONGODB_URL = os.getenv("MONGODB_URL")
+client = pymongo.MongoClient(MONGODB_URL)
 
 def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings()
@@ -20,12 +22,15 @@ def get_vectorstore(text_chunks):
 def upload_data(raw_text):
   database = client.get_database("ChatBot")
   collection = database["JunkData"]
-  upload_data = {
+  filter_data = {
+    "Action": "Upload"
+  }
+  upload_data = { "$set": {
     "Action": "Upload",
     "JunkData": raw_text
-  }
-  result = collection.insert_one(upload_data)
-  print("Inserted document with ID: {result.inserted_id}")
+    }}
+  dbResponse = collection.update_one(filter_data, upload_data)
+  print("Inserted document with ID: {dbResponse.inserted_id}")
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
