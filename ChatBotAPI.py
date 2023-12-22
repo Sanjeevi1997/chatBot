@@ -48,7 +48,10 @@ def main():
             file.write(raw_text)
             print("Upload the file in local location")
         documents = SimpleDirectoryReader("./File_Upload").load_data()
-        index = VectorStoreIndex.from_documents(documents,storage_context= storage_context)
+        database = client.get_database("default_db")
+        collection = database["default_collection"]
+        collection.delete_many({})
+        index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
         st.session_state.conversation = index.as_query_engine()
         print("Embedding created")
     
