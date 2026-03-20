@@ -100,10 +100,22 @@ flowchart TD
 
     J -.->|Shared Vector Store| M
 
-    style UPLOAD fill:#1a1a2e,stroke:#7b2fbe,color:#fff
-    style CHAT fill:#16213e,stroke:#0f3460,color:#fff
-    style J fill:#47A248,stroke:#2d7a2d,color:#fff
-    style D fill:#c0392b,stroke:#922b21,color:#fff
+    style UPLOAD fill:#2d1b4e,stroke:#a78bfa,color:#e9d5ff
+    style CHAT fill:#0f2744,stroke:#60a5fa,color:#bae6fd
+    style J fill:#14532d,stroke:#4ade80,color:#bbf7d0
+    style D fill:#7f1d1d,stroke:#f87171,color:#fecaca
+
+    classDef default fill:#1e293b,stroke:#94a3b8,color:#e2e8f0,rx:6
+    classDef decision fill:#1e3a5f,stroke:#60a5fa,color:#bae6fd
+    classDef terminal fill:#312e81,stroke:#a78bfa,color:#e9d5ff
+    classDef error fill:#7f1d1d,stroke:#f87171,color:#fecaca
+    classDef store fill:#14532d,stroke:#4ade80,color:#bbf7d0
+
+    class A,K terminal
+    class C decision
+    class D error
+    class J store
+    class O,P terminal
 ```
 
 ---
