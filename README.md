@@ -102,20 +102,18 @@ flowchart TD
 
     style UPLOAD fill:#2d1b4e,stroke:#a78bfa,color:#e9d5ff
     style CHAT fill:#0f2744,stroke:#60a5fa,color:#bae6fd
-    style J fill:#14532d,stroke:#4ade80,color:#bbf7d0
-    style D fill:#7f1d1d,stroke:#f87171,color:#fecaca
 
-    classDef default fill:#1e293b,stroke:#94a3b8,color:#e2e8f0,rx:6
+    classDef node fill:#1e293b,stroke:#94a3b8,color:#e2e8f0
     classDef decision fill:#1e3a5f,stroke:#60a5fa,color:#bae6fd
-    classDef terminal fill:#312e81,stroke:#a78bfa,color:#e9d5ff
+    classDef terminal fill:#312e81,stroke:#a78bfa,color:#ddd6fe
     classDef error fill:#7f1d1d,stroke:#f87171,color:#fecaca
     classDef store fill:#14532d,stroke:#4ade80,color:#bbf7d0
 
-    class A,K terminal
+    class B,E,F,G,H,I,L,M,N,P node
     class C decision
+    class A,K,O terminal
     class D error
     class J store
-    class O,P terminal
 ```
 
 ---
